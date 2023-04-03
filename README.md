@@ -1,6 +1,8 @@
 <div align="center">
 <img src="https://avatars.githubusercontent.com/u/88992224?s=200&v=4" width="128" />
 <h1> FastForward </h1>
+
+\#### This is a modified version which may or may not have better performance with bypasses ####
 <p> Don't waste your time with compliance. FastForward automatically skips annoying link shorteners. </p>
 
 
