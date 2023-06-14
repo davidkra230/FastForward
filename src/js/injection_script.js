@@ -820,6 +820,15 @@ hrefBypass(myDramaListRegex, () => {
     safelyNavigate(decodeURIComponent(document.URL.split(/\bmydramalist\.com\/redirect\?q=/)[1]))
 })
 //Insertion point for bypasses running before the DOM is loaded.
+domainBypass("bstlar.com", () => {
+    // boostellar bypass too easy
+    const boostellar_link = encodeURIComponent(location.pathname.slice(1))
+    fetch(`https://bstlar.com/api/link?url=${boostellar_link}`).then(res=>res.json().then((res) => {
+        if (res?.link?.destination_url) {
+            safelyNavigate(res.link.destination_url)
+        }
+    }))
+})
 domainBypass("work.ink", () => {
     const websocketUrl = "wss://redirect-api.work.ink/v1/ws";
 
@@ -2066,6 +2075,13 @@ ensureDomLoaded(() => {
 //             a.submit();
 //         });
 //     });
+    domainBypass(/^megaup.net$/, () => {
+        seconds = 0
+	
+        awaitElement("input#btnsubmit", btn => {
+            btn.click()
+        })
+    })
     hrefBypass(/enxf\.net\/resources\/[a-zA-Z-\.\d]+\/download/, () => {
         ifElement(".XGT-Download-form", ex => safelyNavigate(ex.action));
     })
@@ -2671,13 +2687,15 @@ ensureDomLoaded(() => {
             safelyNavigate(a.href)
         })
     })
-    domainBypass("allkeyshop.com", () => {
-        if (location.pathname.includes("outgoinglink/link/")) {
-            ifElement("a", a => {
+
+    domainBypass("click.allkeyshop.com", () => {
+        if (location.pathname.includes("/offer/")) {
+            awaitElement("body a", a => {
                 safelyNavigate(a.href)
             })
         }
     })
+
     hrefBypass(/sharemods\.com\/([a-z0-9]{12})\//, () => {
         awaitElement("#dForm", a => (a.submit()));
     })
@@ -2696,7 +2714,10 @@ ensureDomLoaded(() => {
         })
     })
 
-
+    hrefBypass(/(blitly\.io|smartlink\.vip)\/st/, () => {
+        const target_url = new URLSearchParams(window.location.search).get('url')
+        safelyNavigate(target_url)
+    })
 
     hrefBypass(/mirrored\.to\/files\//, () => {
         if (location.href.includes('hash')) return; // we already bypassed to here
