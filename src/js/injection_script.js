@@ -568,7 +568,7 @@ domainBypass("uploaded.net", () => {
         return setTimeout(f, 100)
     }
 })
-domainBypass(/mylinks\.xyz|mylink\.zone|mylink1\.biz|clink1\.com/, () => {//clictune
+domainBypass(/mylinks\.xyz|mylink\.zone|mylink1\.biz|clink1\.com|dlink2\.com/, () => {//clictune
     window.setTimeout = f => setTimeout(f, 1)
     awaitElement("#compteur a[href]", a => safelyNavigate(new URL(a.href).searchParams.get("url")))
 })
@@ -820,6 +820,13 @@ hrefBypass(myDramaListRegex, () => {
     safelyNavigate(decodeURIComponent(document.URL.split(/\bmydramalist\.com\/redirect\?q=/)[1]))
 })
 //Insertion point for bypasses running before the DOM is loaded.
+domainBypass("gocmod.com", () => {
+    const url = new URL(window.location.href);
+    const actualLink = url.searchParams.get("urls");
+    if (actualLink) {
+        safelyNavigate(actualLink);
+    }
+})
 domainBypass("bstlar.com", () => {
     // boostellar bypass too easy
     const boostellar_link = encodeURIComponent(location.pathname.slice(1))
@@ -2736,7 +2743,7 @@ ensureDomLoaded(() => {
     });
     domainBypass("filedm.com", () => {
         awaitElement("a#dlbutton", a => {
-            safelyNavigate("http://cdn.directdl.xyz/getfile?id=" + a.href.split("_")[1])
+            safelyNavigate("http://cdn.directfiledl.com/getfile?id=" + a.href.split("_")[1])
         }
         )
     })
@@ -2820,6 +2827,15 @@ ensureDomLoaded(() => {
         ifElement("body > div > h1 > span", a => {
 	    safelyNavigate(a.innerHTML)
         })
+    })
+    
+    // otomi-games.com
+     domainBypass("otomi-games.com", () => {
+        ensureDomLoaded(() => {
+            ifElement("#wpsafe-link a", a => {
+                safelyNavigate(a.href) 
+            })
+        })      
     })
 
     //Insertion point for bypasses detecting certain DOM elements. Bypasses here will no longer need to call ensureDomLoaded.
